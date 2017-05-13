@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<div th:fragment="mainSection">
+    <h2>main section template</h2>
+    <p><span th:text="${content.text}">Placeholder text 1</span></p>
+</div>
+
+<div th:fragment="smallSection">
+    <h3>small section template</h3>
+    <p th:include="::header(myTitle =${content.text})"></p>
+</div>
+
+<div th:fragment="header(myTitle)">
+    <b th:text="${title}"></b>
+</div>
+
+</body>
+</html>

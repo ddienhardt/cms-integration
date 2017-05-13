@@ -1,0 +1,8 @@
+{
+  "page": {
+    "pageTitle": "index",
+    "sections":[
+      {"sectionTemplate":"mainSection", "text":"hello1"},
+      {"sectionTemplate":"smallSection", "text":"hello2"}
+    ]}
+}
