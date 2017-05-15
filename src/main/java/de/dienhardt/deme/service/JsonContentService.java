@@ -12,15 +12,15 @@ import java.util.Map;
 @Component
 public class JsonContentService {
 
-    public Map getPage(){
-        URL resource = getClass().getResource("/data/page.json");
-        Assert.notNull(resource, resource.toString());
-        try {
-            return
-                    new ObjectMapper().readValue(resource,HashMap.class);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+	@SuppressWarnings("unchecked")
+	public Map<String, Object> getPage() {
+		URL resource = getClass().getResource("/data/page.json");
+		Assert.notNull(resource, resource.toString());
+		try {
+			return new ObjectMapper().readValue(resource, HashMap.class);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
 
 }
