@@ -17,5 +17,10 @@
     <b th:text="${title}"></b>
 </div>
 
+<!-- dynamic templates are prerendered by a service, we only insert the prerendered html here -->
+<div th:fragment="dynamic">
+	<div th:utext="${content.markup}" th:remove="tag"></div>
+</div>
+
 </body>
 </html>

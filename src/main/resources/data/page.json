@@ -3,6 +3,7 @@
     "pageTitle": "index",
     "sections":[
       {"sectionTemplate":"mainSection", "text":"hello1"},
-      {"sectionTemplate":"smallSection", "text":"hello2"}
+      {"sectionTemplate":"smallSection", "text":"hello2"},
+      {"sectionTemplate":"dynamic", "type":"exhibitorTeaser", "tag":"cloud", "text":"ERROR :("}
     ]}
 }
