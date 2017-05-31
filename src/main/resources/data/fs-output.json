@@ -1,0 +1,9 @@
+{
+  "page": {
+    "pageTitle": "index",
+    "editorId": " data-fs-attrs=\"eyJsYW5ndWFnZUFiYnJldmlhdGlvbiI6IkRFIiwicmVsZWFzZSI6ZmFsc2UsImNoYW5uZWwiOjIwfQ==\" data-fs-editor-type=\"CMS_MODULE\" data-fs-id=\"eyJpZCI6Mjc0OCwic3RvcmUiOiJQQUdFU1RPUkUifQ==\" data-fs-type=\"Page\" ",
+    "sections":[
+      {"sectionTemplate":"mainSection", "text":"Hallo Andreas", "textEditorId":{"data-fs-transfer-constraint":"allow=&mpicture=false&txt=true&hide=&stype=&mfile=false&etype=&up=false&multi=false","data-fs-attrs":"eyJsYW5ndWFnZUFiYnJldmlhdGlvbiI6IkRFIiwicmVsZWFzZSI6ZmFsc2UsImNoYW5uZWwiOjIwfQ==","data-fs-editor-type":"CMS_INPUT_TEXT","data-fs-transfer-types":"2243933507","data-fs-id":"eyJub2RlcyI6WyJzdF90ZXh0MSJdLCJpZCI6Mjc0OCwic3RvcmUiOiJQQUdFU1RPUkUifQ==","data-fs-type":"GADGET"}},
+      {"sectionTemplate":"smallSection", "text":"Hallo Andreas", "textEditorId":" data-fs-transfer-constraint=\"allow=&amp;mpicture=false&amp;txt=true&amp;hide=&amp;stype=&amp;mfile=false&amp;etype=&amp;up=false&amp;multi=false\" data-fs-attrs=\"eyJsYW5ndWFnZUFiYnJldmlhdGlvbiI6IkRFIiwicmVsZWFzZSI6ZmFsc2UsImNoYW5uZWwiOjIwfQ==\" data-fs-editor-type=\"CMS_INPUT_TEXT\" data-fs-transfer-types=\"2243933507\" data-fs-id=\"eyJub2RlcyI6WyJzdF90ZXh0MiJdLCJpZCI6Mjc0OCwic3RvcmUiOiJQQUdFU1RPUkUifQ==\" data-fs-type=\"GADGET\" "}
+    ]}
+}

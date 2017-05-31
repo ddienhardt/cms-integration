@@ -22,9 +22,14 @@
 
 <h2>what? <span th:text="*{message}"></span></h2>
 <h2>what? <span th:text="*{page.pageTitle}"></span></h2>
-<div th:each="sec,iterStat : ${page.sections}">
-    <div>template to load: <span th:text="*{sec.sectionTemplate}"></span></div>
-    <div th:include="sectionFragments :: *{sec.sectionTemplate}" th:with="content=${sec}">should be replced by section fragment</div>
+<h3>editor? <span th:text="*{page.editorId}"></span></h3>
+<div th:attr="__*{page.editorId}__">
+<!-- TODO use JSON output variant for editorId and maybe use prerpocessed for-each to acutually get th:attr="a=b,c=d,e=f" see also https://github.com/thymeleaf/thymeleaf/issues/392-->
+<!-- otherwise just add a new template for editorIds using th:utext and just throw out the stuff as html string -->
+	<div th:each="sec,iterStat : ${page.sections}">
+	    <div>template to load: <span th:text="*{sec.sectionTemplate}"></span></div>
+	    <div th:include="sectionFragments :: *{sec.sectionTemplate}" th:with="content=${sec}">should be replced by section fragment</div>
+	</div>
 </div>
 </body>
 </html>
