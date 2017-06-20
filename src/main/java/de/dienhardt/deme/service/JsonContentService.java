@@ -19,19 +19,16 @@ public class JsonContentService {
 
 	private ObjectMapper mapper = new ObjectMapper();
 
-	private boolean isPreview = true;
+	private boolean isPreview = false;
 	
 	private Logger LOGGER = LoggerFactory.getLogger(JsonContentService.class);
 
 	@SuppressWarnings("unchecked")
 	public Map<String, Object> getPage(String path) {
 		LOGGER.info("got request for path " + path);
-		System.out.println("got request for path " + path);
 		if ("/".equals(path)) {
 			path = "/page";
 		}
-		System.out.println("got path: " + path);
-		System.out.println("resource to load: " + String.format("/data%s.json", path));
 
 		URL resource = getResource(path);
 		if (resource == null || resource.toString() == null) {
@@ -46,7 +43,6 @@ public class JsonContentService {
 
 	public JsonNode getPageAsJsonNode(String path) {
 		LOGGER.info("got request for path " + path);
-		System.out.println("got request for path " + path);
 		if ("/".equals(path)) {
 			path = "/index";
 		}

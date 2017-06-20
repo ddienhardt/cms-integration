@@ -8,20 +8,19 @@ import java.util.Map.Entry;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.boot.SpringBootConfiguration;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.util.UrlPathHelper;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
-import org.thymeleaf.context.IContext;
-import org.thymeleaf.spring4.context.SpringWebContext;
-import org.thymeleaf.templateresolver.TemplateResolver;
 
 import de.dienhardt.deme.service.JsonContentService;
 import lombok.NonNull;
@@ -29,9 +28,9 @@ import lombok.NonNull;
 @Controller
 public class IndexController {
 
-//	@SuppressWarnings("serial")
-//	public class ResourceNotFoundException extends RuntimeException {
-//	}
+	// @SuppressWarnings("serial")
+	// public class ResourceNotFoundException extends RuntimeException {
+	// }
 
 	/**
 	 * Returs the value as map or null if the actual value is null or of different type.
@@ -71,10 +70,9 @@ public class IndexController {
 		return null;
 	}
 
-	private final JsonContentService contentService;
+	private Logger LOGGER = LoggerFactory.getLogger(JsonContentService.class);
 
-	@Autowired
-	private WebApplicationContext applicationContext;
+	private final JsonContentService contentService;
 
 	@Autowired
 	private UrlPathHelper pathHelper;
@@ -83,18 +81,15 @@ public class IndexController {
 	private TemplateEngine templateEngine;
 
 	@Autowired
+	private DiscoveryClient discoveryClient;
+
+	@Autowired
 	public IndexController(@NonNull JsonContentService contentService) {
 		this.contentService = contentService;
 	}
 
-//	@ExceptionHandler(ResourceNotFoundException.class)
-//	@ResponseStatus(HttpStatus.NOT_FOUND)
-//	public String handleResourceNotFoundException() {
-//		return "error";
-//	}
-
 	@RequestMapping("/**")
-	String index(ModelMap model, HttpServletRequest req, HttpServletResponse resp) throws Exception {
+	public String index(ModelMap model, HttpServletRequest req, HttpServletResponse resp) throws Exception {
 		String path = pathHelper.getPathWithinApplication(req);
 
 		Map<String, Object> page = contentService.getPage(path);
@@ -119,18 +114,34 @@ public class IndexController {
 		return "index";
 	}
 
+	@RequestMapping(value = "/health", produces = "text/plain")
+	@ResponseBody
+	public String healthCheck() {
+		LOGGER.info("description: " + discoveryClient.description());
+		for (String string : discoveryClient.getServices()) {
+			LOGGER.info("service: " + string);
+		}
+
+		List<ServiceInstance> instances = discoveryClient.getInstances("clojure1");
+		for (ServiceInstance serviceInstance : instances) {
+			LOGGER.info("instance: " + serviceInstance);
+		}
+
+		return "OK";
+	}
+
 	private void handleDynamicSection(Map<String, Object> section, Map<String, Object> page) {
 		Object typeObject = section.get("type");
 		if (typeObject != null && typeObject instanceof String) {
 			String type = (String) typeObject;
 			if ("exhibitorTeaser".equals(type)) {
 				System.out.println(section.get("tag"));
-//				templateEngine.process(templateName, context)
+				// templateEngine.process(templateName, context)
 				Context context = new Context(Locale.GERMAN, section);
 				for (Entry<String, Object> entry : context.getVariables().entrySet()) {
 					System.out.println(entry.getKey() + " - " + entry.getValue());
 				}
-				
+
 				context.getVariables().put("section", section);
 				section.put("markup", templateEngine.process("/exhibitor/exhibitorTeaser", context));
 			}
