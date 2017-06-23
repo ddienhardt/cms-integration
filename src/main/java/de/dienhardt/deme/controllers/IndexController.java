@@ -11,9 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringBootConfiguration;
-import org.springframework.cloud.client.ServiceInstance;
-import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,10 +24,6 @@ import lombok.NonNull;
 
 @Controller
 public class IndexController {
-
-	// @SuppressWarnings("serial")
-	// public class ResourceNotFoundException extends RuntimeException {
-	// }
 
 	/**
 	 * Returs the value as map or null if the actual value is null or of different type.
@@ -80,24 +73,24 @@ public class IndexController {
 	@Autowired
 	private TemplateEngine templateEngine;
 
-	@Autowired
-	private DiscoveryClient discoveryClient;
+//	@Autowired
+//	private DiscoveryClient discoveryClient;
 
 	@Autowired
 	public IndexController(@NonNull JsonContentService contentService) {
 		this.contentService = contentService;
 	}
 
-	@RequestMapping("/**")
+	@RequestMapping("/content/**")
 	public String index(ModelMap model, HttpServletRequest req, HttpServletResponse resp) throws Exception {
-		String path = pathHelper.getPathWithinApplication(req);
+		String path = pathHelper.getPathWithinServletMapping(req);
 
 		Map<String, Object> page = contentService.getPage(path);
 		if (page == null) {
 			return "";
 		}
 
-		System.out.println("page: " + page);
+		LOGGER.debug("page: " + page);
 		Map<String, Object> pageMap = asMap(page, "page");
 		List<Map<String, Object>> sections = asMapList(pageMap, "sections");
 		for (Map<String, Object> section : sections) {
@@ -109,23 +102,21 @@ public class IndexController {
 		model.addAllAttributes(page);
 		model.addAttribute("message", "Hello Freaks!");
 
-		System.out.println(page);
-
 		return "index";
 	}
 
 	@RequestMapping(value = "/health", produces = "text/plain")
 	@ResponseBody
 	public String healthCheck() {
-		LOGGER.info("description: " + discoveryClient.description());
-		for (String string : discoveryClient.getServices()) {
-			LOGGER.info("service: " + string);
-		}
-
-		List<ServiceInstance> instances = discoveryClient.getInstances("clojure1");
-		for (ServiceInstance serviceInstance : instances) {
-			LOGGER.info("instance: " + serviceInstance);
-		}
+//		LOGGER.info("description: " + discoveryClient.description());
+//		for (String string : discoveryClient.getServices()) {
+//			LOGGER.info("service: " + string);
+//		}
+//
+//		List<ServiceInstance> instances = discoveryClient.getInstances("clojure1");
+//		for (ServiceInstance serviceInstance : instances) {
+//			LOGGER.info("instance: " + serviceInstance);
+//		}
 
 		return "OK";
 	}
@@ -135,11 +126,11 @@ public class IndexController {
 		if (typeObject != null && typeObject instanceof String) {
 			String type = (String) typeObject;
 			if ("exhibitorTeaser".equals(type)) {
-				System.out.println(section.get("tag"));
+				LOGGER.debug("exhibitorTeaser Tag: " + section.get("tag"));
 				// templateEngine.process(templateName, context)
 				Context context = new Context(Locale.GERMAN, section);
 				for (Entry<String, Object> entry : context.getVariables().entrySet()) {
-					System.out.println(entry.getKey() + " - " + entry.getValue());
+					LOGGER.debug(entry.getKey() + " - " + entry.getValue());
 				}
 
 				context.getVariables().put("section", section);
