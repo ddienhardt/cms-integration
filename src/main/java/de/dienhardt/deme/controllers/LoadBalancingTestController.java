@@ -15,12 +15,12 @@ import de.dienhardt.deme.service.LoadBalancedClientService;
 public class LoadBalancingTestController {
 
 	public static final String SERVICE_URL = "http://clojure1";
-	
+
 	@Autowired
 	private LoadBalancedClientService clientService;
 
-	@LoadBalanced
 	@Bean
+	@LoadBalanced
 	RestTemplate restTemplate() {
 		return new RestTemplate();
 	}

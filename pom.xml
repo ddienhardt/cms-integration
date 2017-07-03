@@ -78,6 +78,11 @@
 			<artifactId>spring-boot-devtools</artifactId>
 			<!--<optional>true</optional> -->
 		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.retry</groupId>
+			<artifactId>spring-retry</artifactId>
+		</dependency>
 	</dependencies>
 
 	<dependencyManagement>
@@ -94,10 +99,33 @@
 
 	<build>
 		<plugins>
+
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+
+			<plugin>
+				<groupId>co.escapeideas.maven</groupId>
+				<artifactId>ansible-maven-plugin</artifactId>
+				<version>1.3.0</version>
+				<executions>
+					<execution>
+						<id>deploy-service</id>
+						<goals>
+							<goal>playbook</goal>
+						</goals>
+						<configuration>
+							<workingDirectory>/home/harald/dev/projekte/vagrant/consul/environment</workingDirectory>
+							<!-- <playbook>playbooks/deploy_cms_integration.yml</playbook> -->
+							<!-- use like:  mvn clean package ansible:playbook@deploy-service -->
+							<playbook>/home/harald/dev/projekte/vagrant/consul/environment/playbooks/deploy_cms_integration.yml</playbook>
+							<promoteDebugAsInfo>true</promoteDebugAsInfo>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
 		</plugins>
 	</build>
 
