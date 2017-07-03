@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
+import com.netflix.loadbalancer.IRule;
+
+import de.dienhardt.deme.loadbalancing.LocalFirstLoadBalancingRule;
 import de.dienhardt.deme.service.LoadBalancedClientService;
 
 @Controller
@@ -23,6 +26,11 @@ public class LoadBalancingTestController {
 	@LoadBalanced
 	RestTemplate restTemplate() {
 		return new RestTemplate();
+	}
+	
+	@Bean
+	public IRule getIRule() {
+		return new LocalFirstLoadBalancingRule();
 	}
 
 	@Bean

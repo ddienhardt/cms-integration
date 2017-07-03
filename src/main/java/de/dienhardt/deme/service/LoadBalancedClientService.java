@@ -20,7 +20,7 @@ public class LoadBalancedClientService {
 	protected String serviceUrl;
 
 	@Value("${hallo}")
-	public String hallo;
+	public String hallo = "set in consul as config/application/hallo -> welt";
 
 	public LoadBalancedClientService(String serviceUrl) {
 		this.serviceUrl = serviceUrl.startsWith("http") ? serviceUrl : "http://" + serviceUrl;

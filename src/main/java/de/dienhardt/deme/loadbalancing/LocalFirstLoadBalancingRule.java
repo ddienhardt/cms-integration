@@ -32,6 +32,7 @@ public class LocalFirstLoadBalancingRule extends RoundRobinRule {
 		if (ipAddress == null || ipAddress.isEmpty()) {
 			ipAddress = inet.findFirstNonLoopbackHostInfo().getIpAddress();
 		}
+		LOGGER.debug("using local ip addr: " + ipAddress);
 	}
 
 	public LocalFirstLoadBalancingRule() {
@@ -45,8 +46,7 @@ public class LocalFirstLoadBalancingRule extends RoundRobinRule {
 	@Override
 	public Server choose(Object key) {
 		LOGGER.info("key: " + key);
-		System.out.println("key: " + key);
-		Server localInstance = getFirstLocalInstance("clojure1");
+		Server localInstance = getFirstLocalInstance();
 		if(localInstance != null) {
 			LOGGER.info("found local instance: {} - isAlive: {} - isReadyToServe {}", localInstance, localInstance.isAlive(), localInstance.isReadyToServe());
 			return localInstance;
@@ -54,10 +54,9 @@ public class LocalFirstLoadBalancingRule extends RoundRobinRule {
 		return super.choose(key);
 	}
 
-	public Server getFirstLocalInstance(String serviceId) {
+	public Server getFirstLocalInstance() {
 		ILoadBalancer lb = getLoadBalancer();
 		List<Server> instances = lb.getReachableServers();
-		LOGGER.debug("local ip addr: " + ipAddress);
 		for (Server server : instances) {
 			LOGGER.debug("found instance {} on {}", server.getId(), server.getHost());
 			if (server.getHost().equals(ipAddress)) {
